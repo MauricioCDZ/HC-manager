@@ -19,6 +19,8 @@ config = {
 }
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
+db = firebase.database()
+users = db.get().val()
 
 # Documentar esto mejor -- Esta función retorna la vista de inicio de sesión
 def signIn(request):
@@ -28,7 +30,17 @@ def signIn(request):
 # Esta función se encarga de captar el email y la contraseña y procede 
 # a realizar  el inicio se sesión através de pyrebase y retorna la vista
 # correspondiente
+
 def postSign(request):
-	email = request.POST.get('email')
-	user = auth.sign_in_with_email_and_password(email,request.POST.get('pass'))
-	return render(request, "login/welcome.html", {'e':email})
+	global users
+	if request.method == 'POST':
+		if 'cedula_search' in request.POST.keys():
+			cedula = request.POST.get('cedula_search')
+			users = {cedula:db.child(cedula).get().val()}
+			#print(users)
+		else:
+			email = request.POST.get('email')
+			user = auth.sign_in_with_email_and_password(email,request.POST.get('pass'))
+		return render(request, "hc_manager/welcome.html", {'data':users})
+	else:
+		return render(request, "hc_manager/welcome.html", {'data':users})
