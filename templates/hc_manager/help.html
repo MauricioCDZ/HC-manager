@@ -8,55 +8,21 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'login/welcome.css' %}">
 	</head>
 	<body>
-		<div class="topnav">
-            <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-sm">Cerrar sesión</button>
-            <button type="button" onclick="location.href='/postSign/'" class="btn btn-secondary btn-sm">Volver</button>
-			<a>Has iniciado sesión</a>
-			<div class="topnav-right">
-				<a href="#">Ayuda</a>
-            </div>
-		</div>
         <div class="canvas">
-            <form action="/newHC/" method="post">
                 {% csrf_token %}
                 <br>
-                <h4 class="font-weight-bold" >Información básica</h4>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" placeholder="Nombre completo" required pattern="[A-Za-z ]{1,34}">
-                    </div>
-                    <div class="form-group col-md-6">
-                    <label for="Edad">Edad</label>
-                    <input type="text" class="form-control" name="edad" placeholder="Edad" required pattern="[0-9]{1,3}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="dirección">Dirección</label>
-                    <input type="text" class="form-control" name="direccion" placeholder="Dirección" required pattern="[A-Za-z0-9 ]{1,55}">
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="sexo">Sexo</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option value="masculino">Masculino</option>
-                            <option value="femenino">Femenino</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="ocupacion">Cédula</label>
-                        <input type="text" class="form-control" name="cedula" placeholder="Número de identificación" required pattern="[0-9]{1,10}">
-                    </div>
-                </div>
+                <h4 class="font-weight-bold" >Información de contacto</h4>
+                <p class="text-justify">Esta aplicación web está basada en Django y desarrollada por Jeffrey García, Mauricio Cortés y Josué Peña</p>
+                <h5 class="font-weight-bold">Email</h5>
+                <p>jeffrey12cali@javerianacali.edu.co</p>
+                <p>josuepeña@javerianacali.edu.co</p>
+                <p>mauriciocortes@javerianacali.edu.co</p>
                 <hr>
-                <h4 class="font-weight-bold" >Información adicional</h4>
-                <div class="form-group">
-                    <label>IPS a las que ha asistido:</label>
-                    <input type="text" class="form-control" name="ips" placeholder="Separe las distintas IPS por comas">
-                </div>
-                <!--textarea rows="5" id="motivInput" class="form-control" name="motivo" placeholder="Texto de ejemplo"></textarea-->
-                <button type="submit" class="btn btn-primary" value="newHC">Crear</button>
-            </form>
+                <h4 class="font-weight-bold">Enlaces importantes</h4>
+                <a href="https://github.com/jeffrey12cali/HC-manager">Repositorio de Github</a><br>
+                <a href="https://www.mintic.gov.co/portal/604/articles-4274_documento.pdf">Ley para la protección de datos</a><br>
+                <a href="#">Enlace al manual de usuario</a><br>
+                <a href="#">Enlace al manual técnico de la aplicación</a><br>
         </div>
     </body>
 </html>	

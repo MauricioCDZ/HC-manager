@@ -13,7 +13,7 @@
             <button type="button" onclick="location.href='/adminHC/'" class="btn btn-secondary btn-sm">Volver</button>
 			<a>Has iniciado sesión</a>
 			<div class="topnav-right">
-				<a href="#">Ayuda</a>
+				<a href="/help/">Ayuda</a>
             </div>
         </div>
         <div class="sidenav2">
@@ -25,6 +25,8 @@
         <div class="canvas">
             {% for ced,user in data.items %}
             <form action="/adminEdit/{{ user.cedula }}/" method="post">
+                <p>Modificado: {{ user.modificacion }}</p>
+                <p>Creado: {{ user.creacion }}</p>
                 {% csrf_token %}
                 <br>
                 <h4 class="font-weight-bold" >Información básica</h4>
