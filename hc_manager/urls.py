@@ -18,8 +18,14 @@ from . import views
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name='app-admin'),
+    path('admin/', views.admin, name="app-admin"),
+    path('adminHC/', views.adminHC, name='app-adminHC'),
+    path('adminUser/', views.adminUser, name='app-adminUser'),
+    path('adminCreate/', views.adminCreate, name='app-adminCreate'),
+    path('adminEdit/<slug:cedula>/', views.adminEdit, name='app-adminEdit'),
     path('', include('login.urls'), name='app-home'),
     path('newHC/', views.newHC, name='app-newHC'),
-    path('editHC/<slug:cedula>/', views.editHC, name='app-editHC')
+    path('editHC/<slug:cedula>/', views.editHC, name='app-editHC'),
+    path('logHC/<slug:cedula>/', views.logHC, name='app-logHC'),
+    path('newCita/<slug:cedula>/', views.newCita, name='app-newCita')
 ]

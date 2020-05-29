@@ -37,10 +37,14 @@ def postSign(request):
 		if 'cedula_search' in request.POST.keys():
 			cedula = request.POST.get('cedula_search')
 			users = {cedula:db.child(cedula).get().val()}
-			#print(users)
+			return render(request, "hc_manager/welcome.html", {'data':users})
 		else:
 			email = request.POST.get('email')
-			user = auth.sign_in_with_email_and_password(email,request.POST.get('pass'))
-		return render(request, "hc_manager/welcome.html", {'data':users})
-	else:
-		return render(request, "hc_manager/welcome.html", {'data':users})
+			try:
+				user = auth.sign_in_with_email_and_password(email,request.POST.get('pass'))
+				print(email)
+				return render(request, "hc_manager/welcome.html", {'data':users, 'email':email.split('@')[0]})
+			except NameError or HTTPError:
+				print("Invalid username")
+	return render(request, "hc_manager/welcome.html", {'data':users})
+		

@@ -9,8 +9,8 @@
 	</head>
 	<body>
 		<div class="topnav">
-            <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-sm">Cerrar sesión</button>
-            <button type="button" onclick="location.href='/postSign/'" class="btn btn-secondary btn-sm">Volver</button>
+            <button type="button" onclick="location.href='/admin/'" class="btn btn-secondary btn-sm">Cerrar sesión</button>
+            <button type="button" onclick="location.href='/adminHC/'" class="btn btn-secondary btn-sm">Volver</button>
 			<a>Has iniciado sesión</a>
 			<div class="topnav-right">
 				<a href="#">Ayuda</a>
@@ -23,7 +23,7 @@
 		</div>
         <div class="canvas">
             {% for ced,user in data.items %}
-            <form action="/editHC/{{ user.cedula }}/" method="post">
+            <form action="/adminEdit/{{ user.cedula }}/" method="post">
                 {% csrf_token %}
                 <br>
                 <h4 class="font-weight-bold" >Información básica</h4>
