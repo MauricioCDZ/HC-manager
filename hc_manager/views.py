@@ -24,7 +24,7 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
-users = db.get().val()
+
 
 # Rutina para añadir un nuevo documento a la base de datos
 def newHC(request):
@@ -35,14 +35,14 @@ def newHC(request):
 		cedula = request.POST.get('cedula')
 		for i in range(5):
 			val = request.POST.get(inputs[i])
-			db.child(cedula).child(val).set(val)
+			db.child(cedula).child(inputs[i]).set(val)
 			cambios[i] = (inputs[i],val)
 		if request.POST.get('ips') != '':
 			ips_list = request.POST.get('ips').split(',')
 		else:
 			ips_list = []
 		db.child(cedula).child('ips').set(ips_list)
-		cabmios[5] = ('ips',ips_list)
+		cambios[5] = ('ips',ips_list)
 		db.child(cedula).child('creacion').set(today)		# Fecha de creación
 		cambios[6] = ('creacion',today)
 		db.child(cedula).child('modificacion').set(today)	# Fecha de modificación
@@ -106,7 +106,7 @@ def newCita(request, cedula):
 	return render(request, "hc_manager/newcita.html", {'cedula':cedula})
 
 def adminHC(request):
-	global users
+	users = db.get().val()
 	if request.method == 'POST':
 		if 'cedula_search' in request.POST.keys():
 			cedula = request.POST.get('cedula_search')
@@ -128,7 +128,7 @@ def admin(request):
 	return render(request, "login/adminSign.html")
 
 def adminUser(request):
-	global users
+	users = db.get().val()
 	if request.method == 'POST':
 		email = request.POST.get('email')
 		auth.create_user_with_email_and_password(email, request.POST.get('pass'))
@@ -143,14 +143,14 @@ def adminCreate(request):
 		cedula = request.POST.get('cedula')
 		for i in range(5):
 			val = request.POST.get(inputs[i])
-			db.child(cedula).child(val).set(val)
+			db.child(cedula).child(inputs[i]).set(val)
 			cambios[i] = (inputs[i],val)
 		if request.POST.get('ips') != '':
 			ips_list = request.POST.get('ips').split(',')
 		else:
 			ips_list = []
 		db.child(cedula).child('ips').set(ips_list)
-		cabmios[5] = ('ips',ips_list)
+		cambios[5] = ('ips',ips_list)
 		db.child(cedula).child('creacion').set(today)		# Fecha de creación
 		cambios[6] = ('creacion',today)
 		db.child(cedula).child('modificacion').set(today)	# Fecha de modificación
@@ -191,3 +191,31 @@ def adminEdit(request,cedula):
 		users = {cedula:db.child(cedula).get().val()}
 
 		return render(request, "hc_manager/adminEdit.html", {'data':users, 'cedula':cedula})
+
+def adminLog(request, cedula):
+	if request.method == 'GET':
+		dicts = db.child(cedula).child('cambios').get().val()
+		cambios = json.dumps(dicts, indent=4, sort_keys=True)
+		print(cambios)
+		return render(request, "hc_manager/adminCambios.html", {'data':cambios, 'cedula':cedula})
+
+def adminCita(request, cedula):
+	if request.method == 'POST':
+		inputs = ['peso','estatura','actividad','dieta','enfermedades','valoracion','motivo','comentario']
+		today = datetime.today().strftime('%d-%m-%Y-%H:%M:%S')
+		dictn = {}
+		for i in range(len(inputs)):
+			val = request.POST.get(inputs[i])
+			dictn[inputs[i]] = val
+		db.child(cedula).child('citas').child(today).set(dictn)
+		users = {cedula:db.child(cedula).get().val()}
+		return render(request, "hc_manager/adminEdit.html", {'data':users, 'cedula':cedula})
+	return render(request, "hc_manager/adminCita.html", {'cedula':cedula})
+
+def adminDelHC(request, cedula):
+	users = db.get().val()
+	db.child(cedula).remove()
+	return render(request, "hc_manager/welcomeAdmin.html", {'data':users})
+
+def help(request):
+	return render(request, "hc_manager/help.html")

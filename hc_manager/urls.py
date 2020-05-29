@@ -23,9 +23,13 @@ urlpatterns = [
     path('adminUser/', views.adminUser, name='app-adminUser'),
     path('adminCreate/', views.adminCreate, name='app-adminCreate'),
     path('adminEdit/<slug:cedula>/', views.adminEdit, name='app-adminEdit'),
+    path('adminLog/<slug:cedula>/', views.adminLog, name='app-adminLog'),
+    path('adminCita/<slug:cedula>/', views.adminCita, name='app-adminCita'),
+    path('adminDelHC/<slug:cedula>/', views.adminDelHC, name='app-adminDelHC'),
     path('', include('login.urls'), name='app-home'),
     path('newHC/', views.newHC, name='app-newHC'),
     path('editHC/<slug:cedula>/', views.editHC, name='app-editHC'),
     path('logHC/<slug:cedula>/', views.logHC, name='app-logHC'),
-    path('newCita/<slug:cedula>/', views.newCita, name='app-newCita')
+    path('newCita/<slug:cedula>/', views.newCita, name='app-newCita'),
+    path('help/', views.help, name='app-help')
 ]

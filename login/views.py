@@ -20,7 +20,7 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
-users = db.get().val()
+
 
 # Documentar esto mejor -- Esta función retorna la vista de inicio de sesión
 def signIn(request):
@@ -32,7 +32,7 @@ def signIn(request):
 # correspondiente
 
 def postSign(request):
-	global users
+	users = db.get().val()
 	if request.method == 'POST':
 		if 'cedula_search' in request.POST.keys():
 			cedula = request.POST.get('cedula_search')
@@ -42,9 +42,9 @@ def postSign(request):
 			email = request.POST.get('email')
 			try:
 				user = auth.sign_in_with_email_and_password(email,request.POST.get('pass'))
-				print(email)
 				return render(request, "hc_manager/welcome.html", {'data':users, 'email':email.split('@')[0]})
 			except NameError or HTTPError:
 				print("Invalid username")
+	print(users)
 	return render(request, "hc_manager/welcome.html", {'data':users})
 		

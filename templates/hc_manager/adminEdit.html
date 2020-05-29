@@ -18,8 +18,9 @@
         </div>
         <div class="sidenav2">
 			{% csrf_token %}
-            <button type="submit" class="btn btn-dark" onclick="location.href='/logHC/{{ cedula }}'" name="newHC" value="create">Historial de cambios</button>
-            <button type="submit" class="btn btn-dark" onclick="location.href='/newCita/{{ cedula }}'" name="newHC" value="create">Añadir Cita</button>
+            <button type="submit" class="btn btn-dark" onclick="location.href='/adminLog/{{ cedula }}'" name="newHC" value="create">Historial de cambios</button>
+            <button type="submit" class="btn btn-dark" onclick="location.href='/adminCita/{{ cedula }}'" name="newHC" value="add">Añadir Cita</button>
+            <button type="submit" class="btn btn-dark" onclick="location.href='/adminDelHC/{{ cedula }}'" name="newHC" value="delete">Eliminar Historia</button>
 		</div>
         <div class="canvas">
             {% for ced,user in data.items %}
