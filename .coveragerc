@@ -1,0 +1,10 @@
+[run]
+#source = .
+#omit = */node_modules/*
+#branch = True
+
+
+[report]
+#fail_under = 100
+show_missing = True
+#skip_covered = False
