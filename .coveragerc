@@ -1,10 +1,8 @@
 [run]
-#source = .
-#omit = */node_modules/*
-#branch = True
+branch = True
 
 
 [report]
-#fail_under = 100
 show_missing = True
-#skip_covered = False
+exclude_lines =
+    except*
