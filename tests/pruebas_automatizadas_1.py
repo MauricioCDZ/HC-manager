@@ -90,6 +90,10 @@ ftc = 0
 tc = 1
 
 
+# Se elimina registro asociado a data[8] antes de iniciar pruebas
+try: db.child(data[8]).remove()
+except: print("Error: se intentó eliminar un registro no existente en la DB")
+
 
 # ------------------ CPV01 ------------------ 
 # Para este caso, queremos probar que los valores de entrada (que son validos) son guardados correctamente en la DB.
@@ -227,6 +231,11 @@ for testcase in testcases[1:]:
     # Se elimina registro asociado a data[8] en el caso de que alguno de los casos sean fallidos.
     try: db.child(data[8]).remove()
     except: print("Error: se intentó eliminar un registro no existente en la DB")
+
+    # Esperar 3 segundos a que la Realtime Database de Firebase tenga tiempo de remover un registro.
+    try: WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.NAME, "none")))
+    except TimeoutException: pass
+
 
 print(f"\nResultado de pruebas: {ftc} casos fallidos, {stc} casos exitosos")
 

@@ -72,10 +72,9 @@ driver.get("http://181.62.170.37:8000/editHC/1112223334/")
 #driver.find_element_by_name('pass').send_keys("test123") 
 #driver.find_element_by_xpath("/html/body/div/div/form/button").click()
 #
-#""" No me funciona a mi, por alguna razon
 # Buscamos la cédula "1112223334"
 #driver.find_element_by_xpath('//*[@id="dateInput"]').send_keys(Keys.RETURN)
-#"""
+#
 #driver.find_element_by_tag_name('html').send_keys(Keys.END)
 #driver.find_element_by_xpath("//a[@href='/editHC/1112223334']").click()
 
