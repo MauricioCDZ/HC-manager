@@ -17,6 +17,7 @@
             </div>
 		</div>
         <div class="canvas">
+            <p style="color:#FF0000">{{ error }}</p>
             <form action="/newHC/" method="post">
                 {% csrf_token %}
                 <br>
@@ -33,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <label for="dirección">Dirección</label>
-                    <input type="text" class="form-control" name="direccion" placeholder="Dirección" required pattern="[A-Za-z0-9 ]{1,55}">
+                    <input type="text" class="form-control" name="direccion" placeholder="Dirección" required pattern="[A-Za-z0-9#, -]{1,55}">
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -45,7 +46,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="ocupacion">Cédula</label>
-                        <input type="text" class="form-control" name="cedula" placeholder="Número de identificación" required pattern="[0-9]{1,10}">
+                        <input type="text" class="form-control" name="cedula" placeholder="Número de identificación" required pattern="[0-9]{10}">
                     </div>
                 </div>
                 <hr>

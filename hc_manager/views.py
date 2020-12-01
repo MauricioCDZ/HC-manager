@@ -28,30 +28,34 @@ db = firebase.database()
 
 # Rutina para añadir un nuevo documento a la base de datos
 def newHC(request):
+	mensaje = ''
 	if request.method == 'POST':
 		inputs = ['nombre','edad','direccion','sexo','cedula','ips','creacion','modificacion','citas','cambios']
 		cambios = ['' for _ in range(len(inputs))]
 		today = datetime.today().strftime('%d-%m-%Y-%H:%M:%S')
 		cedula = request.POST.get('cedula')
-		for i in range(5):
-			val = request.POST.get(inputs[i])
-			db.child(cedula).child(inputs[i]).set(val)
-			cambios[i] = (inputs[i],val)
-		if request.POST.get('ips') != '':
-			ips_list = request.POST.get('ips').split(',')
+		if not exists(cedula):
+			for i in range(5):
+				val = request.POST.get(inputs[i])
+				db.child(cedula).child(inputs[i]).set(val)
+				cambios[i] = (inputs[i],val)
+			if request.POST.get('ips') != '':
+				ips_list = request.POST.get('ips').split(',')
+			else:
+				ips_list = []
+			db.child(cedula).child('ips').set(ips_list)
+			cambios[5] = ('ips',ips_list)
+			db.child(cedula).child('creacion').set(today)		# Fecha de creación
+			cambios[6] = ('creacion',today)
+			db.child(cedula).child('modificacion').set(today)	# Fecha de modificación
+			cambios[7] = ('modificacion',today)
+			db.child(cedula).child('citas').set({})					# Diccionario de citas
+			cambios[8] = ('citas',{})
+			db.child(cedula).child('cambios').child(today).set({'fecha':today,'valores':cambios})
+			return render(request, "hc_manager/welcome.html", {'data': db.get().val()})
 		else:
-			ips_list = []
-		db.child(cedula).child('ips').set(ips_list)
-		cambios[5] = ('ips',ips_list)
-		db.child(cedula).child('creacion').set(today)		# Fecha de creación
-		cambios[6] = ('creacion',today)
-		db.child(cedula).child('modificacion').set(today)	# Fecha de modificación
-		cambios[7] = ('modificacion',today)
-		db.child(cedula).child('citas').set({})					# Diccionario de citas
-		cambios[8] = ('citas',{})
-		db.child(cedula).child('cambios').child(today).set({'fecha':today,'valores':cambios})
-		return render(request, "hc_manager/welcome.html", {'data': db.get().val()})
-	return render(request, "hc_manager/creation.html")
+			mensaje = 'El usuario ya se encuentra registrado en la base de datos'
+	return render(request, "hc_manager/creation.html", {'error': mensaje})
 
 
 def editHC(request, cedula):
@@ -89,7 +93,7 @@ def logHC(request, cedula):
 	if request.method == 'GET':
 		dicts = db.child(cedula).child('cambios').get().val()
 		cambios = json.dumps(dicts, indent=4, sort_keys=True)
-		print(cambios)
+		#print(cambios)
 		return render(request, "hc_manager/cambios.html", {'data':cambios, 'cedula':cedula})
 
 def newCita(request, cedula):
@@ -117,7 +121,7 @@ def adminHC(request):
 			email = request.POST.get('email')
 			try:
 				user = auth.sign_in_with_email_and_password(email,request.POST.get('pass'))
-				print(email)
+				#print(email)
 				if email == 'admin@jmail.com':
 					return render(request, "hc_manager/welcomeAdmin.html", {'data':users, 'email':email.split('@')[0]})
 			except NameError or HTTPError:
@@ -136,30 +140,34 @@ def adminUser(request):
 	return render(request, "hc_manager/newUser.html")
 
 def adminCreate(request):
+	mensaje = ""
 	if request.method == 'POST':
 		inputs = ['nombre','edad','direccion','sexo','cedula','ips','creacion','modificacion','citas','cambios']
 		cambios = ['' for _ in range(len(inputs))]
 		today = datetime.today().strftime('%d-%m-%Y-%H:%M:%S')
 		cedula = request.POST.get('cedula')
-		for i in range(5):
-			val = request.POST.get(inputs[i])
-			db.child(cedula).child(inputs[i]).set(val)
-			cambios[i] = (inputs[i],val)
-		if request.POST.get('ips') != '':
-			ips_list = request.POST.get('ips').split(',')
+		if not exists(cedula):
+			for i in range(5):
+				val = request.POST.get(inputs[i])
+				db.child(cedula).child(inputs[i]).set(val)
+				cambios[i] = (inputs[i],val)
+			if request.POST.get('ips') != '':
+				ips_list = request.POST.get('ips').split(',')
+			else:
+				ips_list = []
+			db.child(cedula).child('ips').set(ips_list)
+			cambios[5] = ('ips',ips_list)
+			db.child(cedula).child('creacion').set(today)		# Fecha de creación
+			cambios[6] = ('creacion',today)
+			db.child(cedula).child('modificacion').set(today)	# Fecha de modificación
+			cambios[7] = ('modificacion',today)
+			db.child(cedula).child('citas').set({})					# Diccionario de citas
+			cambios[8] = ('citas',{})
+			db.child(cedula).child('cambios').child(today).set({'fecha':today,'valores':cambios})
+			return render(request, "hc_manager/welcomeAdmin.html", {'data': db.get().val()})
 		else:
-			ips_list = []
-		db.child(cedula).child('ips').set(ips_list)
-		cambios[5] = ('ips',ips_list)
-		db.child(cedula).child('creacion').set(today)		# Fecha de creación
-		cambios[6] = ('creacion',today)
-		db.child(cedula).child('modificacion').set(today)	# Fecha de modificación
-		cambios[7] = ('modificacion',today)
-		db.child(cedula).child('citas').set({})					# Diccionario de citas
-		cambios[8] = ('citas',{})
-		db.child(cedula).child('cambios').child(today).set({'fecha':today,'valores':cambios})
-		return render(request, "hc_manager/welcomeAdmin.html", {'data': db.get().val()})
-	return render(request, "hc_manager/adminCreate.html")
+			mensaje = "El usuario ya se encuentra registrado en la base de datos"
+	return render(request, "hc_manager/adminCreate.html", {'error':mensaje})
 
 def adminEdit(request,cedula):
 	if request.method == 'GET':
@@ -196,7 +204,7 @@ def adminLog(request, cedula):
 	if request.method == 'GET':
 		dicts = db.child(cedula).child('cambios').get().val()
 		cambios = json.dumps(dicts, indent=4, sort_keys=True)
-		print(cambios)
+		#print(cambios)
 		return render(request, "hc_manager/adminCambios.html", {'data':cambios, 'cedula':cedula})
 
 def adminCita(request, cedula):
@@ -219,3 +227,10 @@ def adminDelHC(request, cedula):
 
 def help(request):
 	return render(request, "hc_manager/help.html")
+
+def exists(cedula):
+	response = False
+	for x in db.get().each():
+		if x.key() == cedula:
+			response = True
+	return response
